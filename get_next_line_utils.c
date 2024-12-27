@@ -6,18 +6,23 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:41:41 by ahavu             #+#    #+#             */
-/*   Updated: 2024/12/02 14:24:24 by ahavu            ###   ########.fr       */
+/*   Updated: 2024/12/27 15:46:45 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include "get_next_line.h"
 
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
 
-char	*ft_calloc(size_t nmemb, size_t size)
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
 {
 	char	*ptr;
 	size_t	product;
@@ -57,16 +62,6 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*new_str;
@@ -79,7 +74,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = 0;
 	k = 0;
 	total_len = ft_strlen(s1) + ft_strlen(s2);
-	new_str = malloc((total_len + 1) * sizeof(char));
+	new_str = ft_calloc((total_len + 1), sizeof(char));
 	if (!new_str)
 		return (NULL);
 	while (s1[i])
@@ -87,7 +82,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		new_str[i] = s1[i];
 		i++;
 	}
-	while (s2[k] && s2[k] != '\n')
+	while (s2[k])
 		new_str[i++] = s2[k++];
 	new_str[i] = '\0';
 	return (new_str);

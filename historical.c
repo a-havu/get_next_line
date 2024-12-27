@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   historical.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 09:23:50 by ahavu             #+#    #+#             */
-/*   Updated: 2024/12/27 16:34:16 by ahavu            ###   ########.fr       */
+/*   Updated: 2024/12/27 16:35:21 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,21 @@ static char	*join(char *next_line, char stash[BUFFER_SIZE + 1])
 	return (tmp);
 }
 
-static char	*fill_line(int fd, char *next_line, char stash[BUFFER_SIZE + 1])
+static char	*fill_line(int fd, char *next_line)
 {
+	static char	stash[BUFFER_SIZE + 1];
 	int			bytes_read;
-	int			i;
 
+	if (stash[0])
+	{
+		next_line = join(next_line, stash);
+		if (ft_strchr(next_line, '\n'))
+		{
+			clean_stash(stash);
+			return(next_line);
+		}
+	}
 	bytes_read = 1;
-	i = 0;
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, stash, BUFFER_SIZE);
@@ -63,11 +71,6 @@ static char	*fill_line(int fd, char *next_line, char stash[BUFFER_SIZE + 1])
 			next_line = join(next_line, stash);
 		if (ft_strchr(next_line, '\n'))
 			break ;
-		else
-		{
-			while (stash[i])
-				stash[i++] = '\0';
-		}
 	}
 	clean_stash(stash);
 	return (next_line);
@@ -93,7 +96,6 @@ static char	*clean_next_line(char *next_line)
 
 char	*get_next_line(int fd)
 {
-	static char	stash[BUFFER_SIZE + 1];
 	char	*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
@@ -101,17 +103,7 @@ char	*get_next_line(int fd)
 	next_line = ft_calloc(1, sizeof(char));
 	if (!next_line)
 		return (NULL);
-	if (stash[0])
-	{
-		next_line = join(next_line, stash);
-		if (ft_strchr(next_line, '\n'))
-		{
-			clean_stash(stash);
-			next_line = clean_next_line(next_line);
-			return(next_line);
-		}
-	}
-	next_line = fill_line(fd, next_line, stash);
+	next_line = fill_line(fd, next_line);
 	next_line = clean_next_line(next_line);
 	return (next_line);
 }
@@ -130,8 +122,8 @@ int main()
 	fd = open("txt_peepshow.txt", O_RDONLY);
 	//fd = open("txt_test.txt", O_RDONLY);
 	//fd = 0;
-	//if (!fd)
-//		return (-1);
+	if (!fd)
+		return (-1);
 	while (1)
 	{
 		nextl = get_next_line(fd);
