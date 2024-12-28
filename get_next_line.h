@@ -6,14 +6,14 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:49:49 by ahavu             #+#    #+#             */
-/*   Updated: 2024/12/27 15:54:00 by ahavu            ###   ########.fr       */
+/*   Updated: 2024/12/28 09:08:59 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 10
 # endif
 
 # include <unistd.h>

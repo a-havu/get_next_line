@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 09:23:50 by ahavu             #+#    #+#             */
-/*   Updated: 2024/12/27 16:34:16 by ahavu            ###   ########.fr       */
+/*   Updated: 2024/12/28 09:53:53 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,16 @@ static void	clean_stash(char *stash)
 	size_t	i;
 
 	i = 0;
-	tmp_stash = ft_strchr(stash, '\n') + 1;
-	if ((size_t)tmp_stash != 1)
+	tmp_stash = ft_strchr(stash, '\n');
+	if (tmp_stash)
+	{
+		tmp_stash++;
 		while (tmp_stash[i])
 		{
 			stash[i] = tmp_stash[i];
 			i++;
 		}
+	}
 	while (stash[i])
 		stash[i++] = '\0';
 }
@@ -36,10 +39,7 @@ static char	*join(char *next_line, char stash[BUFFER_SIZE + 1])
 
 	tmp = ft_strjoin(next_line, stash);
 	if (!tmp)
-	{
-		free (next_line);
 		return (NULL);
-	}
 	free (next_line);
 	return (tmp);
 }
@@ -47,12 +47,11 @@ static char	*join(char *next_line, char stash[BUFFER_SIZE + 1])
 static char	*fill_line(int fd, char *next_line, char stash[BUFFER_SIZE + 1])
 {
 	int			bytes_read;
-	int			i;
 
 	bytes_read = 1;
-	i = 0;
 	while (bytes_read > 0)
 	{
+		clean_stash(stash);
 		bytes_read = read(fd, stash, BUFFER_SIZE);
 		if (bytes_read <= 0 && !next_line[0])
 		{
@@ -63,11 +62,6 @@ static char	*fill_line(int fd, char *next_line, char stash[BUFFER_SIZE + 1])
 			next_line = join(next_line, stash);
 		if (ft_strchr(next_line, '\n'))
 			break ;
-		else
-		{
-			while (stash[i])
-				stash[i++] = '\0';
-		}
 	}
 	clean_stash(stash);
 	return (next_line);
@@ -127,8 +121,8 @@ int main()
 	//fd = open("txt_empty.txt", O_RDONLY);
 	//fd = open("txt_nonl.txt", O_RDONLY);
 	//fd = open("txt_only_one.txt", O_RDONLY);
-	fd = open("txt_peepshow.txt", O_RDONLY);
-	//fd = open("txt_test.txt", O_RDONLY);
+	//fd = open("txt_peepshow.txt", O_RDONLY);
+	fd = open("txt_test.txt", O_RDONLY);
 	//fd = 0;
 	//if (!fd)
 //		return (-1);
