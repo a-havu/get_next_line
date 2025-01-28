@@ -6,7 +6,7 @@
 /*   By: ahavu <ahavu@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:49:49 by ahavu             #+#    #+#             */
-/*   Updated: 2024/12/28 09:08:59 by ahavu            ###   ########.fr       */
+/*   Updated: 2024/12/30 10:57:33 by ahavu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
-char	*ft_strrchr(const char *s, int c);
 char	*get_next_line(int fd);
 
 #endif
