@@ -13,7 +13,8 @@
 #include "get_next_line.h"
 
 /* "clean" the stash[]: if there's a newline character,
-overwrite stash[] from index 0 with characters that appear after the newline character */
+overwrite stash[] from index 0 with characters that appear
+after the newline character */
 static void	clean_stash(char *stash)
 {
 	char	*tmp_stash;
@@ -70,7 +71,8 @@ static char	*fill_line(int fd, char *next_line, char stash[BUFFER_SIZE + 1])
 	return (next_line);
 }
 
-/* "clean" the returnable next_line from all characters that appear after a newline character - if one occurs */
+/* "clean" the returnable next_line from all characters
+that appear after a newline character - if one occurs */
 static char	*clean_next_line(char *next_line)
 {
 	int	i;
@@ -91,7 +93,7 @@ static char	*clean_next_line(char *next_line)
 
 char	*get_next_line(int fd)
 {
-	static char	stash[BUFFER_SIZE + 1]; // a static variable that will store the BUFFER_SIZE (+1) amount of chars
+	static char	stash[BUFFER_SIZE + 1]; // a static variable storing BUFFER_SIZE (+1) amount of chars
 	char		*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
