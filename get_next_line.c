@@ -12,6 +12,8 @@
 
 #include "get_next_line.h"
 
+/* "clean" the stash[]: if there's a newline character,
+overwrite stash[] from index 0 with characters that appear after the newline character */
 static void	clean_stash(char *stash)
 {
 	char	*tmp_stash;
@@ -32,6 +34,7 @@ static void	clean_stash(char *stash)
 		stash[i++] = '\0';
 }
 
+/* join the stash to next_line by using a temporary char array */
 static char	*join(char *next_line, char stash[BUFFER_SIZE + 1])
 {
 	char	*tmp;
@@ -43,6 +46,7 @@ static char	*join(char *next_line, char stash[BUFFER_SIZE + 1])
 	return (tmp);
 }
 
+/* read from the file descriptor to stash[] */
 static char	*fill_line(int fd, char *next_line, char stash[BUFFER_SIZE + 1])
 {
 	int			bytes_read;
@@ -66,6 +70,7 @@ static char	*fill_line(int fd, char *next_line, char stash[BUFFER_SIZE + 1])
 	return (next_line);
 }
 
+/* "clean" the returnable next_line from all characters that appear after a newline character - if one occurs */
 static char	*clean_next_line(char *next_line)
 {
 	int	i;
@@ -86,17 +91,17 @@ static char	*clean_next_line(char *next_line)
 
 char	*get_next_line(int fd)
 {
-	static char	stash[BUFFER_SIZE + 1];
+	static char	stash[BUFFER_SIZE + 1]; // a static variable that will store the BUFFER_SIZE (+1) amount of chars
 	char		*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	next_line = ft_calloc(1, sizeof(char));
+	next_line = ft_calloc(1, sizeof(char)); // allocate memory for the next line to be gotten from the file descriptor
 	if (!next_line)
 		return (NULL);
 	if (stash[0])
 	{
-		next_line = join(next_line, stash);
+		next_line = join(next_line, stash); // add the contents of stash[] to next_line, if stash is not empty
 		if (ft_strchr(next_line, '\n'))
 		{
 			clean_stash(stash);
